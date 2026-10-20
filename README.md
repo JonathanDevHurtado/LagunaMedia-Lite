@@ -10,9 +10,9 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-Propietaria-red.svg" alt="Licencia: Propietaria" /></a>
-  <img src="https://img.shields.io/badge/Versión-1.0.0-blue.svg" alt="Versión 1.0.0" />
+  <img src="https://img.shields.io/badge/Versión-1.0.1-blue.svg" alt="Versión 1.0.1" />
   <img src="https://img.shields.io/badge/Plataforma-Linux%20%7C%20Windows-lightgrey.svg" alt="Plataforma: Linux y Windows" />
-  <img src="https://img.shields.io/badge/Tamaño-97--146%20MB-informational.svg" alt="Tamaño del binario" />
+  <img src="https://img.shields.io/badge/Tamaño-97--129%20MB-informational.svg" alt="Tamaño del binario" />
   <img src="https://img.shields.io/badge/Telemetría-ninguna-success.svg" alt="Sin telemetría" />
 </p>
 
@@ -21,8 +21,8 @@
 </p>
 
 Este repositorio distribuye **sólo los binarios compilados** de Laguna Media
-Lite (AppImage para Linux y portable para Windows). El código fuente no se
-publica.
+Lite (AppImage y Flatpak para Linux, portable para Windows). El código fuente no
+se publica.
 
 ---
 
@@ -31,7 +31,8 @@ publica.
 Laguna Media Lite es la versión mínima de **Laguna Media**: un proyecto
 independiente, hecho para una sola cosa — **descargar y convertir lo más rápido
 posible**. Arranca en menos de un segundo porque no carga reproductores,
-biblioteca, miniaturas ni temas personalizables. Sólo tres pestañas.
+biblioteca, miniaturas ni temas personalizables. Sólo tres secciones, en una
+barra lateral.
 
 | | Laguna Media | Laguna Media Lite |
 |---|---|---|
@@ -41,10 +42,11 @@ biblioteca, miniaturas ni temas personalizables. Sólo tres pestañas.
 | Conversión de códec (H.264/HEVC/AV1) | ✅ | ❌ |
 | Biblioteca con miniaturas y caché | ✅ | ❌ |
 | Temas y personalización | ✅ | ❌ (tema fijo) |
-| Pestañas | 7 | **3** |
+| Secciones | 7 (pestañas) | **3 (barra lateral)** |
 | Arranque | ~3 s | **< 1 s** |
 | Portable para Windows | 112 MB | **97 MB** |
-| AppImage para Linux | 163 MB | **146 MB** |
+| AppImage para Linux | 163 MB | **129 MB** |
+| Flatpak para Linux | ❌ | **102 MB** |
 
 Si querés además reproductor, biblioteca y temas, la app completa está en
 **[LagunaMedia-App](https://github.com/JonathanDevHurtado/LagunaMedia-App)**.
@@ -55,10 +57,10 @@ Si querés además reproductor, biblioteca y temas, la app completa está en
 
 | Descargar | Convertir |
 |---|---|
-| ![Pestaña Descargar](screenshots/01-descargar.png) | ![Pestaña Convertir](screenshots/02-convertir.png) |
+| ![Sección Descargar](screenshots/01-descargar.png) | ![Sección Convertir](screenshots/02-convertir.png) |
 
 <p align="center">
-  <img src="screenshots/03-motor.png" alt="Pestaña Motor: actualización de yt-dlp" width="820" />
+  <img src="screenshots/03-motor.png" alt="Sección Motor: actualización de yt-dlp" width="820" />
 </p>
 
 *Capturas de la app real, con rutas de ejemplo.*
@@ -72,7 +74,8 @@ Todos los binarios de la última versión están en
 
 | Archivo | Plataforma | Requisitos |
 |---|---|---|
-| [`LagunaMediaLite-x86_64.AppImage`](../../releases/latest/download/LagunaMediaLite-x86_64.AppImage) | Linux x86_64 | glibc 2.35+ (Fedora 36+, Ubuntu 22.04+, Debian 12+) |
+| [`LagunaMediaLite-x86_64.AppImage`](../../releases/latest/download/LagunaMediaLite-x86_64.AppImage) | Linux x86_64 | glibc 2.35+ (Fedora 36+, Ubuntu 22.04+, Debian 12+) + `libfuse2` |
+| [`LagunaMediaLite-x86_64.flatpak`](../../releases/latest/download/LagunaMediaLite-x86_64.flatpak) | Linux x86_64 | Flatpak 1.10+ (Fedora, Ubuntu, Debian, etc.) |
 | [`LagunaMediaLite-portable-win64.zip`](../../releases/latest/download/LagunaMediaLite-portable-win64.zip) | Windows 10 / 11 x64 | Ninguno (portable, sin instalador) |
 | [`SHA256SUMS.txt`](../../releases/latest/download/SHA256SUMS.txt) | — | Checksums para verificar integridad |
 
@@ -93,7 +96,20 @@ Get-FileHash .\LagunaMediaLite-portable-win64.zip -Algorithm SHA256
 
 ## Instalación
 
-### Linux — AppImage (recomendado)
+### Linux — Flatpak (recomendado en Fedora 41+)
+
+Fedora y otras distribuciones nuevas ya no incluyen `libfuse2`, así que el
+AppImage no abre ahí. El Flatpak funciona igual en todas:
+
+```bash
+flatpak install LagunaMediaLite-x86_64.flatpak
+flatpak run com.lagunamedia.LagunaMediaLite
+```
+
+La primera vez, Flatpak pide instalar el runtime `org.freedesktop.Platform//24.08`
+si no lo tenés (lo baja solo).
+
+### Linux — AppImage
 
 No hace falta instalar nada:
 
@@ -102,11 +118,13 @@ chmod +x LagunaMediaLite-x86_64.AppImage
 ./LagunaMediaLite-x86_64.AppImage
 ```
 
-Si el sistema no tiene FUSE habilitado:
+Si el sistema no tiene FUSE habilitado (o no tiene `libfuse2`):
 
 ```bash
 ./LagunaMediaLite-x86_64.AppImage --appimage-extract-and-run
 ```
+
+En Fedora 41+ directamente no hay `libfuse2`: usá la versión Flatpak.
 
 ### Windows — portable
 
@@ -128,8 +146,6 @@ elegís:
 - **Video con audio** — hasta 4K/2160p, según lo que ofrezca el video.
 - **Solo audio** — MP3, Opus, M4A, FLAC o WAV, con bitrate seleccionable.
 
-Tiene **cookies del navegador** integradas, para los videos que piden iniciar
-sesión.
 
 ### Convertir
 
@@ -138,6 +154,12 @@ OGG, MP4 (H.264) o MKV (H.264)**.
 
 Los archivos se convierten **en paralelo**: varios a la vez, según los núcleos
 de la CPU, en lugar de uno detrás de otro.
+
+### Interfaz
+
+Navegación lateral (sin pestañas), estética de bloques con bordes duros,
+biseles y tipografía pixelada, sobre la paleta neon de Laguna. La ventana abre
+directo: no hay pantalla de carga.
 
 ### Motor
 
@@ -155,11 +177,11 @@ la app grande.
 
 | Pieza | Tecnología |
 |---|---|
-| Interfaz | Python 3 + PySide6 (Qt Widgets) |
+| Interfaz | Python 3 + PySide6 (Qt Widgets), tema de bloques con tipografía pixelada |
 | Descarga | yt-dlp (Unlicense) |
 | Conversión de audio y video | FFmpeg estático (GPL) |
 | Configuración | QSettings en `~/.config/LagunaMediaLite/` |
-| Empaquetado | PyInstaller (onedir) + AppImage / ZIP portable |
+| Empaquetado | PyInstaller (onedir) + AppImage / Flatpak / ZIP portable |
 
 ### Descarga
 
@@ -194,6 +216,9 @@ publicar una versión nueva de la aplicación.
   dentro de un contenedor Ubuntu 22.04 para que el binario corra en cualquier
   distribución con glibc 2.35 o superior.
 - **Windows**: PyInstaller `onedir` → ZIP portable, sin instalador.
+- **Flatpak**: manifiesto propio (`com.lagunamedia.LagunaMediaLite`) con
+  `org.freedesktop.Platform//24.08`; PySide6-Essentials y yt-dlp se instalan
+  dentro del sandbox y FFmpeg va como binario estático.
 - El `.spec` de PyInstaller **excluye QtMultimedia** (Lite no reproduce nada):
   eso recorta decenas de MB del binario final.
 
@@ -212,7 +237,8 @@ es más rápido y más simple de mantener.
 
 **¿Por qué un tema fijo?** Personalizar colores y fondos implica cargar y
 guardar configuración de estilo, escanear la carpeta de imágenes y repintar la
-UI. Lite usa un único tema oscuro "neon" y se ahorra todo eso.
+UI. Lite usa un único tema oscuro "neon" con estética de bloques (bordes duros,
+biseles y tipografía pixelada) y se ahorra todo eso.
 
 **¿Por qué el motor se actualiza en caliente?** YouTube cambia sus defensas cada
 pocas semanas. Con el actualizador, un cambio no obliga a esperar una versión
@@ -225,8 +251,9 @@ nueva de la app.
 
 ## Requisitos
 
-- **Linux**: x86_64 con glibc 2.35 o superior (Fedora 36+, Ubuntu 22.04+,
-  Debian 12+). No requiere Python ni dependencias del sistema.
+- **Linux**: x86_64. Con **Flatpak** funciona en cualquier distribución
+  (Fedora, Ubuntu, Debian, Arch, etc.). El **AppImage** pide glibc 2.35 o
+  superior (Fedora 36+, Ubuntu 22.04+, Debian 12+) y `libfuse2`.
 - **Windows**: 10 u 11 de 64 bits. No requiere instalación.
 
 ---
@@ -260,8 +287,8 @@ nueva de la app.
 
 | Problema | Solución |
 |---|---|
-| YouTube "ya no descarga" | Pestaña **Motor** → *Actualizar motor de descargas* |
-| YouTube pide iniciar sesión | Elegí tu navegador en **Cookies del navegador** |
+| YouTube "ya no descarga" | Sección **Motor** → *Actualizar motor de descargas* |
+| El AppImage no abre en Fedora 41+ | Fedora ya no trae `libfuse2`: instalá la versión **Flatpak** |
 | El AppImage no abre (FUSE) | `./LagunaMediaLite-x86_64.AppImage --appimage-extract-and-run` |
 | El AppImage no abre (GLIBC) | Necesitás glibc 2.35+ (Fedora 36+, Ubuntu 22.04+, Debian 12+) |
 | Descargas lentas | Instalá `aria2c` (`sudo dnf install aria2` / `sudo apt install aria2`) |
@@ -289,12 +316,22 @@ En la carpeta que elijas. Por defecto, en tu carpeta de Descargas.
 **¿Necesito instalar FFmpeg o yt-dlp por separado?**
 No: vienen incluidos en el binario.
 
-**¿Por qué pesa 146 MB?**
+**¿Por qué pesa 129 MB (AppImage) o 102 MB (Flatpak)?**
 Porque incluye FFmpeg estático, Python y Qt. Es el costo de que funcione sin
 dependencias en cualquier equipo.
 
 **¿Habrá versión para Android?**
 Lite es para escritorio. La app completa tiene versión Android.
+
+---
+
+## Cambios de la versión 1.0.1
+
+- **Corregido**: la app se cerraba sola al abrir (Linux y Windows).
+- **Nuevo**: versión **Flatpak**, que funciona en Fedora 41+ sin `libfuse2`.
+- **Nuevo**: interfaz rediseñada con navegación lateral y estética de bloques.
+- **Eliminado**: la pantalla de carga.
+- **Eliminado**: la opción de cookies del navegador.
 
 ---
 
@@ -339,3 +376,4 @@ El usuario es el único responsable del uso que le dé y de cumplir con las leye
 de su país, los términos de servicio de las plataformas y los derechos de autor
 del contenido que descargue. El autor no se hace responsable por usos
 indebidos.
+
