@@ -140,8 +140,9 @@ carpeta entera.
 
 ### Descargar
 
-Pegás un enlace de **YouTube** o **TikTok** (la plataforma se detecta sola) y
-elegís:
+Elegís la plataforma (**YouTube** o **TikTok**) y pegás el link en su propio
+campo: cada una guarda su enlace y se valida por separado, así no hay que
+adivinar de dónde viene. Después elegís:
 
 - **Video con audio** — hasta 4K/2160p, según lo que ofrezca el video.
 - **Solo audio** — MP3, Opus, M4A, FLAC o WAV, con bitrate seleccionable.
@@ -332,6 +333,8 @@ Lite es para escritorio. La app completa tiene versión Android.
 - **Nuevo**: interfaz rediseñada con navegación lateral y estética de bloques.
 - **Eliminado**: la pantalla de carga.
 - **Eliminado**: la opción de cookies del navegador.
+- **Nuevo**: YouTube y TikTok tienen selector y campo de link propios, con
+  validación independiente.
 
 ---
 
