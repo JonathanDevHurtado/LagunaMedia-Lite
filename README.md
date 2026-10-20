@@ -46,7 +46,7 @@ barra lateral.
 | Arranque | ~3 s | **< 1 s** |
 | Portable para Windows | 112 MB | **97 MB** |
 | AppImage para Linux | 163 MB | **129 MB** |
-| Flatpak para Linux | ❌ | **102 MB** |
+| Flatpak para Linux | ❌ | **107 MB** |
 
 Si querés además reproductor, biblioteca y temas, la app completa está en
 **[LagunaMedia-App](https://github.com/JonathanDevHurtado/LagunaMedia-App)**.
