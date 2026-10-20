@@ -1,0 +1,2 @@
+55435841f3327daef3c424c7573e7b1f244d50da9be84878973080707c616b9e  LagunaMediaLite-x86_64.AppImage
+7b49560dee4d47171d1d74d4efe008f03fa6b4120c4ba4590474a368d6a3dbd0  LagunaMediaLite-portable-win64.zip
