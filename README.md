@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-Propietaria-red.svg" alt="Licencia: Propietaria" /></a>
-  <img src="https://img.shields.io/badge/Versión-1.0.1-blue.svg" alt="Versión 1.0.1" />
+  <img src="https://img.shields.io/badge/Versión-1.0.2-blue.svg" alt="Versión 1.0.2" />
   <img src="https://img.shields.io/badge/Plataforma-Linux%20%7C%20Windows-lightgrey.svg" alt="Plataforma: Linux y Windows" />
   <img src="https://img.shields.io/badge/Tamaño-102--153%20MB-informational.svg" alt="Tamaño del binario" />
   <img src="https://img.shields.io/badge/Telemetría-ninguna-success.svg" alt="Sin telemetría" />
@@ -18,7 +18,7 @@
 
 <p align="center">
   <a href="../../releases/latest"><img src="https://img.shields.io/badge/⬇%20Descargar-última%20versión-yellow.svg" alt="Descargar la última versión" /></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.1-informational.svg" alt="Historial de cambios" /></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.2-informational.svg" alt="Historial de cambios" /></a>
 </p>
 
 ---
@@ -199,6 +199,9 @@ administrador. Para moverla, movés la carpeta completa.
 
 ### Motor
 
+- **El motor viene incluido de fábrica**: `yt-dlp` y sus extractores de YouTube
+  y TikTok se compilan dentro del binario, así que la app descarga desde el
+  primer arranque, incluso sin haber configurado nada.
 - Actualiza **yt-dlp** a la última versión oficial con un clic.
 - La descarga el zipapp oficial desde GitHub Releases y lo deja en
   `~/.local/share/lagunamedia/ytdlp`, con prioridad sobre el incluido en el
@@ -299,6 +302,11 @@ app; probá con otro video u otra red.
 | Windows marca el `.exe` como desconocido | Binario sin firma comercial | Verificá el SHA-256 y ejecutá igual |
 | El Flatpak no aparece en el menú | Instalación sólo para el usuario | `flatpak run com.lagunamedia.LagunaMediaLite` |
 | La configuración no se guarda | Permisos de la carpeta de configuración | Revisá `~/.config/LagunaMediaLite/` |
+| Error `CERTIFICATE_VERIFY_FAILED` al descargar (Linux) | Bug de 1.0.1: el binario compilado en Ubuntu no encontraba las CA en Fedora | Actualizá a **1.0.2** |
+| La app se cerraba al escribir o pegar un link (Linux) | Bug de 1.0.1: el AppImage llevaba una `libxkbcommon` incompatible con la del sistema | Actualizá a **1.0.2** (o usá el Flatpak) |
+| Quiero comprobar qué motor está usando | — | `./LagunaMediaLite-x86_64.AppImage --motor` |
+| Quiero comprobar que el motor y ffmpeg están bien | — | `./LagunaMediaLite-x86_64.AppImage --autodiagnostico` |
+| Quiero comprobar que descarga de verdad | — | `./LagunaMediaLite-x86_64.AppImage --probar-descarga` |
 
 ---
 
@@ -348,8 +356,13 @@ Es software propietario. Ver [LICENSE](LICENSE).
 
 - **Compilación reproducible en CI**: cada versión se compila desde cero en
   runners de Linux (Ubuntu 22.04) y Windows, no en la máquina del autor.
-- **Prueba de humo**: los binarios se ejecutan en el pipeline para verificar
-  que abren antes de publicarse.
+- **Prueba de humo real**: en cada compilación, el CI ejecuta el binario de
+  Linux **y** el de Windows para verificar dos cosas: que el motor viene
+  incluido y el autodiagnóstico (`--motor`, `--autodiagnostico`: motor,
+  extractores de YouTube/TikTok y ffmpeg). Si algo falla, el binario no se
+  publica. Además se prueba una descarga real de audio (`--probar-descarga`).
+- **Regresión de teclado**: el CI comprueba que el AppImage no vuelva a
+  empaquetar `libxkbcommon` (el bug que cerraba la app al escribir en 1.0.1).
 - **Integridad**: cada release publica `SHA256SUMS.txt` con el hash SHA-256 de
   cada archivo, para que puedas comprobar que lo que descargaste es exactamente
   lo que se publicó.
@@ -360,6 +373,9 @@ Es software propietario. Ver [LICENSE](LICENSE).
 
 Ver [CHANGELOG.md](CHANGELOG.md). Resumen de la versión actual:
 
+- **1.0.2** — arregla el cierre al escribir o pegar un link en Linux, refuerza
+  el motor incluido (con reinstalación automática si fallara) y agrega
+  diagnósticos `--motor` y `--probar-descarga`.
 - **1.0.1** — arregla el cierre inesperado al abrir, agrega Flatpak, rediseño
   sin pestañas, sin pantalla de carga, sin cookies y con YouTube/TikTok
   separados.

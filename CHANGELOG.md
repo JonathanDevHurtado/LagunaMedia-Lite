@@ -7,6 +7,35 @@ el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
 ---
 
+## [1.0.2] — 2026-10-20
+
+Versión de corrección crítica para escritorio.
+
+### Corregido
+- **La app se cerraba al escribir o pegar un link en Linux.** El AppImage
+  empaquetaba su propia copia de `libxkbcommon.so.0` mientras que el plugin
+  `xcb` de Qt usaba la `libxkbcommon-x11` del sistema; esa mezcla provocaba
+  `SIGSEGV` con la primera tecla. Ahora se usa la biblioteca del sistema y se
+  puede escribir y pegar con normalidad.
+- **Descargas con `CERTIFICATE_VERIFY_FAILED` en el AppImage publicado.** El
+  binario se compila en Ubuntu y la ruta de certificados de OpenSSL no existe
+  en Fedora, así que no se cargaba ninguna CA. Ahora el bundle de `certifi`
+  viaja dentro del binario, independiente de la distribución.
+- **Motor blindado**: si la copia incluida en el binario no se pudiera cargar
+  (build incompleto o instalación dañada), la app descarga el motor oficial y
+  reintenta sola antes de mostrar un error.
+
+### Agregado
+- `--motor`: imprime la versión de la app, el `yt-dlp` activo y la carpeta
+  actualizable (también queda en `diagnostico.txt` en Windows).
+- `--autodiagnostico`: verifica motor, extractores de YouTube/TikTok y ffmpeg
+  sin usar la red. Es la prueba obligatoria del CI.
+- `--probar-descarga`: descarga un audio corto y devuelve código 0/1. La usa
+  el CI en Linux y Windows como prueba de humo real (informativa).
+- El CI falla si un AppImage vuelve a empaquetar `libxkbcommon`.
+
+---
+
 ## [1.0.1] — 2026-10-20
 
 Versión de corrección y rediseño.
