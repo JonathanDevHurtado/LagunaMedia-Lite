@@ -57,9 +57,9 @@ Si querés además reproductor, biblioteca y temas, la app completa está en
 |---|---|
 | ![Pestaña Descargar](screenshots/01-descargar.png) | ![Pestaña Convertir](screenshots/02-convertir.png) |
 
-| Motor (actualización de yt-dlp) | |
-|---|---|
-| ![Pestaña Motor](screenshots/03-motor.png) | |
+<p align="center">
+  <img src="screenshots/03-motor.png" alt="Pestaña Motor: actualización de yt-dlp" width="820" />
+</p>
 
 *Capturas de la app real, con rutas de ejemplo.*
 
