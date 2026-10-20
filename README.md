@@ -410,7 +410,7 @@ componentes de terceros:
 **Jonathan Hurtado** — autor y mantenedor.
 
 - GitHub: [@JonathanDevHurtado](https://github.com/JonathanDevHurtado)
-- Correo: [JonathanHurtadDev@proton.me](mailto:JonathanHurtadDev@proton.me)
+- Correo: [JonathanHurtadoDev@proton.me](mailto:JonathanHurtadoDev@proton.me)
 
 ---
 
