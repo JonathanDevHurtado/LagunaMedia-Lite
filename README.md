@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-Propietaria-red.svg" alt="Licencia: Propietaria" /></a>
-  <img src="https://img.shields.io/badge/Versión-1.0.2-blue.svg" alt="Versión 1.0.2" />
+  <img src="https://img.shields.io/badge/Versión-1.0.3-blue.svg" alt="Versión 1.0.3" />
   <img src="https://img.shields.io/badge/Plataforma-Linux%20%7C%20Windows-lightgrey.svg" alt="Plataforma: Linux y Windows" />
   <img src="https://img.shields.io/badge/Tamaño-102--153%20MB-informational.svg" alt="Tamaño del binario" />
   <img src="https://img.shields.io/badge/Telemetría-ninguna-success.svg" alt="Sin telemetría" />
@@ -18,7 +18,7 @@
 
 <p align="center">
   <a href="../../releases/latest"><img src="https://img.shields.io/badge/⬇%20Descargar-última%20versión-yellow.svg" alt="Descargar la última versión" /></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.2-informational.svg" alt="Historial de cambios" /></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.3-informational.svg" alt="Historial de cambios" /></a>
 </p>
 
 ---
@@ -71,8 +71,9 @@ biblioteca, sin temas y sin configuración.
 | Flatpak para Linux | — | **107 MB** |
 | Portable para Windows | 112 MB | **102 MB** |
 
-Si además querés reproductor, biblioteca, temas y versión Android, usá la app
-completa: **[Laguna Media](https://github.com/JonathanDevHurtado/LagunaMedia-App)**.
+Si además querés reproductor, biblioteca y temas, usá la app completa:
+**[Laguna Media](https://github.com/JonathanDevHurtado/LagunaMedia-App)**. Para
+Android, el APK es el mismo en los dos repositorios.
 
 ---
 
@@ -100,6 +101,7 @@ Todos los binarios de la última versión están en
 | [`LagunaMediaLite-x86_64.flatpak`](../../releases/latest/download/LagunaMediaLite-x86_64.flatpak) | Linux x86_64 | Flatpak 1.10+ (Fedora, Ubuntu, Debian, Arch…) |
 | [`LagunaMediaLite-x86_64.AppImage`](../../releases/latest/download/LagunaMediaLite-x86_64.AppImage) | Linux x86_64 | glibc 2.35+ (Fedora 36+, Ubuntu 22.04+, Debian 12+) y `libfuse2` |
 | [`LagunaMediaLite-portable-win64.zip`](../../releases/latest/download/LagunaMediaLite-portable-win64.zip) | Windows 10 / 11 x64 | Ninguno (portable, sin instalador) |
+| [`LagunaMedia-Android.apk`](../../releases/latest/download/LagunaMedia-Android.apk) | Android 7.0+ (API 24), cualquier arquitectura | ~212 MB de espacio libre |
 | [`SHA256SUMS.txt`](../../releases/latest/download/SHA256SUMS.txt) | — | Huellas SHA-256 para verificar la descarga |
 
 ### Verificar la descarga (recomendado)
@@ -147,6 +149,24 @@ Si el sistema no tiene FUSE habilitado:
 
 ```bash
 ./LagunaMediaLite-x86_64.AppImage --appimage-extract-and-run
+```
+
+### Android — APK
+
+1. Pasá `LagunaMedia-Android.apk` al teléfono (cable USB, nube o mensajería) y
+   abrilo desde el explorador de archivos.
+2. Cuando Android lo pida, permití **instalar apps de orígenes desconocidos**
+   para esa app (explorador o navegador).
+3. La primera vez, la app prepara su motor (descomprime Python, yt-dlp, FFmpeg
+   y aria2c): puede tardar unos segundos. Después arranca al instante.
+
+Es el **mismo APK** que publica Laguna Media: la versión Android ya tiene el
+alcance de Lite (descargar de YouTube/TikTok y convertir, sin reproductor,
+biblioteca ni temas). Está firmado con la clave de release y soporta páginas
+de memoria de 16 KB, el requisito de los Android nuevos.
+
+```bash
+adb install -r LagunaMedia-Android.apk
 ```
 
 ### Windows — portable
@@ -333,8 +353,11 @@ No hay binario oficial para macOS.
 Porque incluye Python, Qt y FFmpeg estático. Es el costo de funcionar sin
 dependencias en cualquier equipo.
 
-**¿Habrá versión Android de Lite?**
-No: Lite es para escritorio. La app completa tiene versión Android.
+**¿Hay versión Android de Lite?**
+Sí. Se publica `LagunaMedia-Android.apk` en este repositorio: es la misma app
+nativa que la completa y su alcance coincide con Lite (descargar y convertir,
+sin reproductor, biblioteca ni temas). Está firmada con la clave de release y
+soporta páginas de 16 KB.
 
 **¿Por qué no publican el código?**
 Es software propietario. Ver [LICENSE](LICENSE).
@@ -373,6 +396,9 @@ Es software propietario. Ver [LICENSE](LICENSE).
 
 Ver [CHANGELOG.md](CHANGELOG.md). Resumen de la versión actual:
 
+- **1.0.3** — primera publicación para Android (`LagunaMedia-Android.apk`, el
+  mismo APK que Laguna Media), firmada con la clave de release y compatible
+  con páginas de 16 KB.
 - **1.0.2** — arregla el cierre al escribir o pegar un link en Linux, refuerza
   el motor incluido (con reinstalación automática si fallara) y agrega
   diagnósticos `--motor` y `--probar-descarga`.

@@ -7,6 +7,25 @@ el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
 ---
 
+## [1.0.3] — 2026-10-21
+
+Primera publicación para Android.
+
+### Agregado
+- **`LagunaMedia-Android.apk`**: la app nativa para Android (Kotlin + Compose),
+  con el mismo alcance que Lite (descargar de YouTube/TikTok y convertir, sin
+  reproductor, biblioteca ni temas). Es el mismo APK que publica Laguna Media.
+- El APK está **firmado con la clave de release** (antes se publicaba un build
+  de debug) y soporta páginas de memoria de 16 KB, el requisito de los Android
+  nuevos y de Google Play.
+
+### Verificado
+- Instalado y probado en un Nokia 5.4 (Android 12) y en un Xiaomi 23117RA68G
+  (Android 16): descarga de YouTube completa, guardada en la galería, y
+  validación del link de TikTok.
+
+---
+
 ## [1.0.2] — 2026-10-20
 
 Versión de corrección crítica para escritorio.
