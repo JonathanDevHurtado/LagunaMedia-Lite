@@ -389,7 +389,9 @@ Es software propietario. Ver [LICENSE](LICENSE).
   Linux **y** el de Windows para verificar dos cosas: que el motor viene
   incluido y el autodiagnóstico (`--motor`, `--autodiagnostico`: motor,
   extractores de YouTube/TikTok y ffmpeg). Si algo falla, el binario no se
-  publica. Además se prueba una descarga real de audio (`--probar-descarga`).
+  publica. Además se intenta una descarga real de audio (`--probar-descarga`);
+  si YouTube bloquea la IP del runner, esa prueba es informativa y no invalida
+  el binario.
 - **Regresión de teclado**: el CI comprueba que el AppImage no vuelva a
   empaquetar `libxkbcommon` (el bug que cerraba la app al escribir en 1.0.1).
 - **Integridad**: cada release publica `SHA256SUMS.txt` con el hash SHA-256 de
