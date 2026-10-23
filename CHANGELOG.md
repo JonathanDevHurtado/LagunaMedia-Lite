@@ -7,6 +7,71 @@ el proyecto usa [Versionado Semántico](https://semver.org/lang/es/).
 
 ---
 
+## [1.0.4] — 2026-10-23
+
+Funciona de fábrica: el motor actualizado viaja dentro de la app y la
+actualización pasa a ser opcional, sin descargas automáticas ni acumulación.
+
+### Corregido
+- **El motor actualizado del usuario se ignoraba hasta reiniciar**: al arrancar
+  se importaba el `yt-dlp` empaquetado antes de agregar la carpeta del usuario
+  a `sys.path`; como Python guarda el módulo en `sys.modules`, la copia nueva
+  no se usaba. Ahora la carpeta del usuario se activa antes de importar.
+- **Cada pulsación de "Actualizar motor" volvía a descargar 3 MB** aunque ya
+  estuvieras al día. Ahora se consulta la última release, se compara con la
+  versión instalada y sólo se descarga si hay algo nuevo.
+- **Una copia vieja del usuario tapaba el motor incluido** en Flatpak y
+  AppImage: si en `~/.var/app/.../ytdlp` o `~/.local/share/lagunamedia/ytdlp`
+  quedaba una versión anterior (por ejemplo `2026.08.19`), la app la usaba
+  igual aunque el binario ya trajera `2026.10.21`. Ahora se comparan las dos
+  versiones, se activa la más nueva y la copia obsoleta se elimina. Si la del
+  usuario es más nueva, se respeta; si está dañada, se descarta y se usa la
+  incluida.
+- Se limpian `yt_dlp.old`, descargas temporales y cachés de consulta viejas; si
+  una actualización se interrumpe, se recupera el motor anterior al arrancar.
+- **Android**: el AAR de `youtubedl-android` traía yt-dlp `2025.11.12`, que ya
+  no sirve para YouTube. El APK ahora incluye el zipapp oficial
+  `2026.10.21` en `assets/` y lo copia antes de `YoutubeDL.init`. La app
+  funciona desde la primera descarga sin pulsar "Actualizar motor".
+- Las descargas de Android ya no actualizan el motor automáticamente ni
+  reintentan a ciegas: si el motor falla, se enciende el aviso y el usuario
+  decide cuándo actualizar.
+
+### Agregado
+- **Aviso opcional con punto rojo** en la navegación (escritorio) y en la
+  tarjeta **Motor** (Android) cuando hay una versión nueva de yt-dlp. El
+  chequeo de escritorio corre en segundo plano, con caché de 24 h, sin
+  bloquear la ventana ni la descarga.
+- **Android 3.0.4**: el mismo APK de la app completa, con el motor incluido y
+  el aviso opcional. Se publica también en el Release de Lite.
+- Script `android/scripts/fetch_ytdlp.py` y paso de CI que refrescan el
+  `yt-dlp` incluido antes de compilar el APK.
+
+### Verificado
+- AppImage Lite 1.0.4 con HOME limpio: `--motor` informa `2026.10.21`,
+  `--autodiagnostico` da OK y `--probar-descarga` descarga "Me at the zoo"
+  sin crear ninguna copia del motor en el usuario.
+- AppImage Lite con una copia vieja y rota (`2026.08.19`) en
+  `~/.local/share/lagunamedia/ytdlp`: se detecta, se ignora, se borra y la
+  descarga real sigue funcionando con el motor incluido. Con una copia
+  `2099.01.01` sí se activa la del usuario.
+- Flatpak Lite recompilado con la misma prueba: la copia real
+  `2026.08.19` de `~/.var/app/com.lagunamedia.LagunaMediaLite/data/...` fue
+  eliminada, `--motor` informa `2026.10.21`, `--autodiagnostico` da
+  `RESULTADO: OK` y `--probar-descarga` descarga el audio de prueba.
+- Android 3.0.4: instalación limpia en un Nokia 5.4 (Android 12) y en un
+  Xiaomi 23117RA68G (Android 16). En ambos el APK copió el motor incluido
+  `2026.10.21` antes de inicializar el SDK y la pantalla mostró esa versión,
+  sin pulsar "Actualizar motor".
+- Prueba instrumentada del aviso: al marcar una versión `2099.01.01` aparece
+  el punto rojo, el texto de actualización y el botón "Actualizar a
+  2099.01.01"; al limpiar el estado, desaparecen.
+- Descarga real desde la UI del APK release en el Nokia 5.4 (Android 12):
+  `Me at the zoo` en MP3 terminó en **Listo** con el motor incluido, sin
+  pulsar "Actualizar motor".
+
+---
+
 ## [1.0.3] — 2026-10-21
 
 Primera publicación para Android.

@@ -10,7 +10,7 @@
 
 <p align="center">
   <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-Propietaria-red.svg" alt="Licencia: Propietaria" /></a>
-  <img src="https://img.shields.io/badge/Versión-1.0.3-blue.svg" alt="Versión 1.0.3" />
+  <img src="https://img.shields.io/badge/Versión-1.0.4-blue.svg" alt="Versión 1.0.4" />
   <img src="https://img.shields.io/badge/Plataforma-Linux%20%7C%20Windows-lightgrey.svg" alt="Plataforma: Linux y Windows" />
   <img src="https://img.shields.io/badge/Tamaño-102--153%20MB-informational.svg" alt="Tamaño del binario" />
   <img src="https://img.shields.io/badge/Telemetría-ninguna-success.svg" alt="Sin telemetría" />
@@ -18,7 +18,7 @@
 
 <p align="center">
   <a href="../../releases/latest"><img src="https://img.shields.io/badge/⬇%20Descargar-última%20versión-yellow.svg" alt="Descargar la última versión" /></a>
-  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.3-informational.svg" alt="Historial de cambios" /></a>
+  <a href="CHANGELOG.md"><img src="https://img.shields.io/badge/Historial-1.0.4-informational.svg" alt="Historial de cambios" /></a>
 </p>
 
 ---
@@ -157,8 +157,9 @@ Si el sistema no tiene FUSE habilitado:
    abrilo desde el explorador de archivos.
 2. Cuando Android lo pida, permití **instalar apps de orígenes desconocidos**
    para esa app (explorador o navegador).
-3. La primera vez, la app prepara su motor (descomprime Python, yt-dlp, FFmpeg
-   y aria2c): puede tardar unos segundos. Después arranca al instante.
+3. La primera vez, la app copia el motor yt-dlp incluido en el APK
+   (`2026.10.21`) y prepara FFmpeg/aria2c: puede tardar unos segundos. Después
+   arranca al instante.
 
 Es el **mismo APK** que publica Laguna Media: la versión Android ya tiene el
 alcance de Lite (descargar de YouTube/TikTok y convertir, sin reproductor,
@@ -188,9 +189,8 @@ administrador. Para moverla, movés la carpeta completa.
    4K si el video lo ofrece) o sólo el audio.
 3. **Convertí si hace falta.** En *Convertir* elegís uno o varios archivos y el
    formato de salida (MP3, Opus, M4A, FLAC, WAV, OGG, MP4 o MKV).
-4. **Si algo no descarga, actualizá el motor.** En la sección *Motor* hay un
-   botón que baja la última versión oficial de yt-dlp sin reinstalar la app.
-   Es la solución al 90% de los *"YouTube ya no descarga"*.
+4. **Si hay un punto rojo en Motor**, podés aplicar la actualización opcional
+   de yt-dlp. La app no la descarga ni la instala sola.
 
 ---
 
@@ -219,15 +219,18 @@ administrador. Para moverla, movés la carpeta completa.
 
 ### Motor
 
-- **El motor viene incluido de fábrica**: `yt-dlp` y sus extractores de YouTube
-  y TikTok se compilan dentro del binario, así que la app descarga desde el
-  primer arranque, incluso sin haber configurado nada.
-- Actualiza **yt-dlp** a la última versión oficial con un clic.
-- La descarga el zipapp oficial desde GitHub Releases y lo deja en
-  `~/.local/share/lagunamedia/ytdlp`, con prioridad sobre el incluido en el
-  binario. No hace falta publicar una versión nueva de la app.
-- La app **no** se conecta a internet al arrancar: sólo cuando descargás algo
-  o cuando pedís actualizar el motor.
+- **El motor viene incluido de fábrica**: `yt-dlp 2026.10.21` y sus extractores
+  de YouTube y TikTok viajan dentro del binario, así que la app descarga desde
+  el primer arranque, incluso sin haber configurado nada.
+- **Actualización opcional**: la app consulta como máximo una vez cada 24 h si
+  hay una versión nueva. Si la hay, aparece un **punto rojo** en la sección
+  *Motor*; no se descarga ni se instala nada hasta que lo pidas.
+- **Sin acumulación**: la actualización se guarda en
+  `~/.local/share/lagunamedia/ytdlp` (o `%LOCALAPPDATA%\LagunaMedia\ytdlp`).
+  Al arrancar se compara con el motor incluido: gana la más nueva y la copia
+  obsoleta se elimina. Si la del usuario está dañada, se descarta.
+- La app sólo consulta GitHub para ver si hay una actualización; la descarga
+  únicamente cuando aplicás el cambio.
 
 ---
 
@@ -296,9 +299,9 @@ montarse. Dos salidas:
 
 **2. "YouTube ya no descarga" / error `unable to extract`**
 
-YouTube cambió algo y el motor incluido quedó viejo. Andá a **Motor →
-Actualizar motor de descargas**. Se baja la última versión oficial de yt-dlp y
-la descarga vuelve a funcionar sin reinstalar la app.
+YouTube cambió algo y el motor incluido quedó viejo. Si hay un **punto rojo**
+en **Motor**, aplicá la actualización opcional: se baja la última versión
+oficial de yt-dlp y la descarga vuelve a funcionar sin reinstalar la app.
 
 **3. El link es rechazado**
 
@@ -314,7 +317,7 @@ app; probá con otro video u otra red.
 |---|---|---|
 | El AppImage no abre y no muestra nada | Falta `libfuse2` | Flatpak, o `--appimage-extract-and-run` |
 | El AppImage muestra `GLIBC_2.xx not found` | Sistema más viejo que glibc 2.35 | Actualizá la distro o usá Flatpak |
-| "YouTube no descarga" / `unable to extract` | Motor (yt-dlp) viejo | **Motor → Actualizar motor** |
+| "YouTube no descarga" / `unable to extract` | Motor viejo o actualización disponible | Aplicá la actualización opcional si hay punto rojo |
 | "Ese link no es de YouTube/TikTok" | Plataforma equivocada o URL incompleta | Cambiá la plataforma o copiá el link del video |
 | TikTok: `IP address is blocked` | TikTok bloquea ese post por región o antigüedad | Probá con otro video u otra conexión |
 | La descarga baja sin audio o sin video | El formato elegido no existe para ese video | Elegí *Mejor calidad disponible* o bajá el audio por separado |
@@ -369,9 +372,12 @@ Es software propietario. Ver [LICENSE](LICENSE).
 - **Sin cuentas, sin telemetría, sin analítica, sin publicidad.** La app no
   tiene servidor propio y no manda datos a ningún lado.
 - Sólo hace red en dos casos: cuando descargás algo (hacia YouTube/TikTok) y
-  cuando pedís actualizar el motor (hacia GitHub Releases).
+  cuando consulta si hay una actualización del motor (hacia GitHub Releases,
+  como máximo una vez cada 24 h). La descarga del motor sólo ocurre si la
+  aplicás vos.
 - La configuración y las descargas quedan en tu equipo.
-- No hay comprobación automática de versiones ni llamadas ocultas al arrancar.
+- La comprobación de versiones no descarga ni instala nada sola: sólo enciende
+  el punto rojo cuando hay una actualización opcional.
 
 ---
 
@@ -396,6 +402,9 @@ Es software propietario. Ver [LICENSE](LICENSE).
 
 Ver [CHANGELOG.md](CHANGELOG.md). Resumen de la versión actual:
 
+- **1.0.4** — el motor `yt-dlp 2026.10.21` viaja incluido y la actualización
+  pasa a ser opcional: punto rojo, sin descargas automáticas y sin acumular
+  copias viejas. Incluye el APK 3.0.4, el mismo que Laguna Media.
 - **1.0.3** — primera publicación para Android (`LagunaMedia-Android.apk`, el
   mismo APK que Laguna Media), firmada con la clave de release y compatible
   con páginas de 16 KB.
